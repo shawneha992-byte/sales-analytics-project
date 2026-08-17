@@ -1,0 +1,234 @@
+/* =========================================================
+   PRODUCTS PAGE STYLING (Fixed Layout)
+   ========================================================= */
+
+.products-page {
+  animation: fadeIn 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 1400px;
+}
+
+/* Header with Right-Aligned Add Button */
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.primary-btn {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 8px;
+  background: #6366f1;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+  white-space: nowrap;
+}
+
+.primary-btn:hover {
+  background: #4f46e5;
+}
+
+/* Controls / Filter Bar alignment */
+.products-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  width: 100%;
+}
+
+.search-box {
+  flex: 1;
+  max-width: 400px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  border: 1px solid #272d3d;
+  background: #121620;
+  border-radius: 8px;
+  color: #858da1;
+}
+
+.search-box input {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: #f4f6fb;
+  font-size: 13px;
+  outline: none;
+}
+
+.search-box input::placeholder {
+  color: #697286;
+}
+
+.date-filter {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+  background: #171d29;
+  border: 1px solid #222838;
+  color: #dce0e8;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.date-filter:hover {
+  background: #272d43;
+  border-color: #323b54;
+}
+
+.products-list-card {
+  padding: 21px;
+  background: #11151f;
+  border: 1px solid #222838;
+  border-radius: 12px;
+}
+
+.product-grid-layout {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr 1fr 1.3fr 0.8fr;
+  align-items: center;
+  column-gap: 15px;
+}
+
+.product-id-tag {
+  color: #818cf8 !important;
+  font-size: 10px !important;
+}
+
+.category-text {
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+/* Status Badges */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 9px;
+  border-radius: 5px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.status-badge.in-stock {
+  background: rgba(52, 211, 153, 0.08);
+  color: #34d399;
+}
+.status-badge.in-stock .status-dot {
+  background: #34d399;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.status-badge.low-stock {
+  background: rgba(251, 191, 36, 0.08);
+  color: #fbbf24;
+}
+.status-badge.low-stock .status-dot {
+  background: #fbbf24;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.status-badge.out-of-stock {
+  background: rgba(248, 113, 113, 0.08);
+  color: #f87171;
+}
+.status-badge.out-of-stock .status-dot {
+  background: #f87171;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.action-icon-btn {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #272d3d;
+  border-radius: 6px;
+  background: #121620;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.action-icon-btn:hover {
+  border-color: #444d63;
+  color: #ffffff;
+  background: #1a1f2b;
+}
+
+.action-icon-btn.delete:hover {
+  border-color: rgba(248, 113, 113, 0.4);
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.08);
+}
+
+.no-results {
+  padding: 30px;
+  text-align: center;
+  color: #697286;
+  font-size: 13px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 900px) {
+  .products-controls {
+    flex-wrap: wrap;
+  }
+  .search-box {
+    max-width: none;
+    flex: 1 1 100%;
+  }
+}
+
+@media (max-width: 700px) {
+  .product-grid-layout {
+    grid-template-columns: 1fr;
+    row-gap: 6px;
+  }
+}
