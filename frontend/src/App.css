@@ -432,3 +432,120 @@ html, body, #root {
   margin-right: 0 !important;
   max-width: 100% !important;
 }
+/* =========================================================
+   ACCESS DENIED
+   ========================================================= */
+
+.access-denied-page {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+.access-denied-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 35px;
+  text-align: center;
+  background: #11151f;
+  border: 1px solid #272d3d;
+  border-radius: 14px;
+  box-sizing: border-box;
+}
+
+.access-denied-icon {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: rgba(248, 113, 113, 0.1);
+  color: #f87171;
+}
+
+.access-denied-card h2 {
+  margin: 0 0 8px;
+  color: #f4f6fb;
+  font-size: 20px;
+}
+
+.access-denied-card p {
+  margin: 0 0 12px;
+  color: #858ea1;
+  font-size: 13px;
+}
+
+.access-denied-card span {
+  display: block;
+  margin-bottom: 22px;
+  color: #697286;
+  font-size: 11px;
+}
+
+.access-denied-card strong {
+  color: #a5b4fc;
+}
+
+.access-denied-card button {
+  height: 40px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 8px;
+  background: #6366f1;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.access-denied-card button:hover {
+  background: #4f46e5;
+}
+/* =========================================================
+   NAVBAR PROFILE
+   ========================================================= */
+
+.profile-trigger {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.profile-user-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+
+  min-width: 0;
+  line-height: 1.1;
+}
+
+.profile-name {
+  display: block;
+
+  color: #dce0e8;
+  font-size: 12px;
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+.profile-role {
+  display: block;
+
+  color: #697286;
+  font-size: 9px;
+
+  white-space: nowrap;
+}
+
+.chevron-icon {
+  flex-shrink: 0;
+  color: #697286;
+}

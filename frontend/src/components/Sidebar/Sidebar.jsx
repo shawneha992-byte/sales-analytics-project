@@ -7,10 +7,17 @@ import {
   Users,
   Percent,
   Bot,
+  Boxes,
+  UserCog,
 } from "lucide-react";
+
+import { useAuth } from "../../context/AuthContext";
+
 import "./Sidebar.css";
 
 function Sidebar() {
+  const { isAdmin } = useAuth();
+
   return (
     <aside className="sidebar">
       <div className="sidebar-brand">
@@ -20,27 +27,97 @@ function Sidebar() {
 
       <div className="sidebar-menu-group">
         <span className="menu-label">Main Menu</span>
-        <NavLink to="/" className={({ isActive }) => (isActive ? "sidebar-item active" : "sidebar-item")}>
+
+        {/* Dashboard */}
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            isActive ? "sidebar-item active" : "sidebar-item"
+          }
+        >
           <LayoutDashboard size={18} />
           <span>Dashboard</span>
         </NavLink>
-        <NavLink to="/products" className={({ isActive }) => (isActive ? "sidebar-item active" : "sidebar-item")}>
+
+        {/* Products */}
+        <NavLink
+          to="/products"
+          className={({ isActive }) =>
+            isActive ? "sidebar-item active" : "sidebar-item"
+          }
+        >
           <Package size={18} />
           <span>Products</span>
         </NavLink>
-        <NavLink to="/categories" className={({ isActive }) => (isActive ? "sidebar-item active" : "sidebar-item")}>
+
+        {/* Categories */}
+        <NavLink
+          to="/categories"
+          className={({ isActive }) =>
+            isActive ? "sidebar-item active" : "sidebar-item"
+          }
+        >
           <Layers size={18} />
           <span>Categories</span>
         </NavLink>
-        <NavLink to="/customers" className={({ isActive }) => (isActive ? "sidebar-item active" : "sidebar-item")}>
+
+        {/* Customers */}
+        <NavLink
+          to="/customers"
+          className={({ isActive }) =>
+            isActive ? "sidebar-item active" : "sidebar-item"
+          }
+        >
           <Users size={18} />
           <span>Customers</span>
         </NavLink>
-        <NavLink to="/discounts" className={({ isActive }) => (isActive ? "sidebar-item active" : "sidebar-item")}>
+
+        {/* Discount Analysis */}
+        <NavLink
+          to="/discounts"
+          className={({ isActive }) =>
+            isActive ? "sidebar-item active" : "sidebar-item"
+          }
+        >
           <Percent size={18} />
           <span>Discount Analysis</span>
         </NavLink>
-        <NavLink to="/ai-analyst" className={({ isActive }) => (isActive ? "sidebar-item active" : "sidebar-item")}>
+
+        {/* Inventory */}
+        <NavLink
+          to="/inventory"
+          className={({ isActive }) =>
+            isActive ? "sidebar-item active" : "sidebar-item"
+          }
+        >
+          <Boxes size={18} />
+          <span>Inventory</span>
+        </NavLink>
+
+        {/* =================================================
+            ADMIN ONLY
+            ================================================= */}
+        {isAdmin && (
+          <NavLink
+            to="/users"
+            className={({ isActive }) =>
+              isActive
+                ? "sidebar-item active"
+                : "sidebar-item"
+            }
+          >
+            <UserCog size={18} />
+            <span>User Management</span>
+          </NavLink>
+        )}
+
+        {/* AI Business Analyst */}
+        <NavLink
+          to="/ai-analyst"
+          className={({ isActive }) =>
+            isActive ? "sidebar-item active" : "sidebar-item"
+          }
+        >
           <Bot size={18} />
           <span>AI Business Analyst</span>
         </NavLink>

@@ -121,3 +121,73 @@
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+/* =========================================================
+   ROLE SELECTOR
+   ========================================================= */
+
+.role-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.role-option {
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 12px;
+  border: 1px solid #222838;
+  border-radius: 10px;
+  background: #171d29;
+  color: #858ea1;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.role-option:hover {
+  border-color: #3a4357;
+  background: #1a2030;
+}
+
+.role-option.selected {
+  border-color: #6366f1;
+  background: rgba(99, 102, 241, 0.1);
+  color: #a5b4fc;
+  box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.15);
+}
+
+.role-option svg {
+  flex-shrink: 0;
+}
+
+.role-option div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.role-option strong {
+  color: #f4f6fb;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.role-option span {
+  color: #697286;
+  font-size: 0.65rem;
+  line-height: 1.3;
+}
+
+.role-option.selected span {
+  color: #858ea1;
+}
+
+/* Mobile */
+
+@media (max-width: 480px) {
+  .role-selector {
+    grid-template-columns: 1fr;
+  }
+}
