@@ -1,0 +1,32 @@
+# Node / frontend
+node_modules/
+.env
+.env.*
+.next/
+out/
+dist/
+build/
+coverage/
+
+# Python / backend
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+*.egg-info/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+*.log
+logs/
+
+# Data artifacts
+*.csv
+*.parquet
+*.sqlite
+*.db
