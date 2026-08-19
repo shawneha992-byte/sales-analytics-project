@@ -241,3 +241,47 @@
   gap: 18px;
   width: 100%;
 }
+/* =========================================================
+   AI BUSINESS ANALYST - LIVE API STATES
+   ========================================================= */
+
+.send-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.prompt-chip:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.refresh-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ai-loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+.loading-spinner {
+  animation: spin 0.8s linear infinite;
+}
+
+.error-bubble {
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}

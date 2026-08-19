@@ -6,53 +6,72 @@ import {
   TrendingUp,
   Package,
   Users,
-  ArrowUpRight,
   RefreshCw,
+  Loader2,
+  AlertCircle,
 } from "lucide-react";
 import "./AiBusinessAnalyst.css";
 
+const API_URL = "http://localhost:4000/api/ai-analytics/ask";
+
 const suggestedPrompts = [
-  "Why did electronics sales spike last month?",
+  "What are my total revenue, total orders, average order value, and top 5 products?",
+  "What are my most important business insights?",
   "Which products are at risk of running out of stock?",
-  "Give me a strategy to improve customer retention rates.",
-  "Summarize our top revenue drivers for Q2.",
+  "Which products are generating the most revenue?",
 ];
 
 function AiBusinessAnalyst() {
   const [messages, setMessages] = useState([
     {
       sender: "ai",
-      text: "Hello! I am your AI Business Analyst. I have analyzed your latest sales, inventory, and customer data. How can I assist you with your business strategy today?",
+      text: "Hello! I am your Sales Analytics AI Business Analyst. I can analyze your sales, revenue, customers, products, inventory, discounts, and overall business performance. What would you like to know?",
       time: "Just now",
     },
   ]);
+
   const [inputMessage, setInputMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSendMessage = (e) => {
+  // Ask real AI backend
+  const handleSendMessage = async (e) => {
     e.preventDefault();
-    if (!inputMessage.trim()) return;
 
+    const question = inputMessage.trim();
+
+    if (!question || isLoading) return;
+
+    // Add user message immediately
     const userMsg = {
       sender: "user",
-      text: inputMessage,
+      text: question,
       time: "Just now",
     };
 
     setMessages((prev) => [...prev, userMsg]);
-    const query = inputMessage;
     setInputMessage("");
+    setIsLoading(true);
 
-    // Simulate AI response
-    setTimeout(() => {
-      let aiReply = "Based on current dashboard trends, your performance remains strong across all primary sectors. Let me know if you would like a detailed breakdown of specific product lines!";
-      
-      if (query.toLowerCase().includes("stock") || query.toLowerCase().includes("inventory")) {
-        aiReply = "Inventory check: Currently, 8 products are approaching their minimum stock levels, led by high-demand accessories and electronics[cite: 2]. Consider restocking soon to avoid fulfillment delays.";
-      } else if (query.toLowerCase().includes("electronics") || query.toLowerCase().includes("spike")) {
-        aiReply = "Electronics sales spiked due to high demand for Wireless Headphones and Gaming Laptops, showing an 18.4% increase compared to the previous period[cite: 2].";
-      } else if (query.toLowerCase().includes("retention") || query.toLowerCase().includes("customer")) {
-        aiReply = "Customer analytics show that electronics buyers have the highest repeat purchase rate[cite: 2]. Implementing a loyalty discount program for this segment could further boost retention.";
+    try {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          question,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(
+          data.message || "Failed to get response from AI Business Analyst."
+        );
       }
+
+      const aiReply = data.answer || "No answer received from the AI.";
 
       setMessages((prev) => [
         ...prev,
@@ -62,7 +81,40 @@ function AiBusinessAnalyst() {
           time: "Just now",
         },
       ]);
-    }, 800);
+    } catch (error) {
+      console.error("AI Business Analyst Error:", error);
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          sender: "ai",
+          text:
+            "Sorry, I could not connect to the AI Business Analyst right now. Please make sure the backend server is running on port 4000.",
+          time: "Just now",
+          error: true,
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Reset chat
+  const handleResetSession = () => {
+    setMessages([
+      {
+        sender: "ai",
+        text: "Hello! I am your Sales Analytics AI Business Analyst. What would you like me to analyze?",
+        time: "Just now",
+      },
+    ]);
+
+    setInputMessage("");
+  };
+
+  // Quick prompt
+  const handlePromptClick = (prompt) => {
+    setInputMessage(prompt);
   };
 
   return (
@@ -70,48 +122,74 @@ function AiBusinessAnalyst() {
       {/* Header */}
       <div className="dashboard-header">
         <div>
-         
-          <p>Chat with your live AI assistant to uncover deep financial and operational insights</p>
+          <h2>AI Business Analyst</h2>
+          <p>
+            Chat with your live AI assistant to uncover sales, customer,
+            product, inventory and business insights.
+          </p>
         </div>
 
         <div className="header-actions">
-          <button className="refresh-btn" title="Reset Session">
+          <button
+            className="refresh-btn"
+            title="Reset Session"
+            onClick={handleResetSession}
+            disabled={isLoading}
+          >
             <RefreshCw size={17} />
           </button>
         </div>
       </div>
 
       <div className="ai-analyst-layout">
-        {/* Chat Section */}
+        {/* ================= CHAT ================= */}
         <div className="dashboard-card chat-container">
           <div className="card-header chat-top-bar">
             <div className="ai-title">
               <div className="ai-icon">
                 <Sparkles size={18} />
               </div>
+
               <div>
                 <h3>Intelligence Chatroom</h3>
-                <p>Connected to live database metrics</p>
+                <p>Connected to live business analytics</p>
               </div>
             </div>
+
             <span className="ai-status">ONLINE</span>
           </div>
 
+          {/* Messages */}
           <div className="chat-messages-area">
             {messages.map((msg, index) => (
               <div
                 key={index}
-                className={`chat-message-row ${msg.sender === "user" ? "user-row" : "ai-row"}`}
+                className={`chat-message-row ${
+                  msg.sender === "user" ? "user-row" : "ai-row"
+                }`}
               >
                 {msg.sender === "ai" && (
                   <div className="msg-avatar ai-avatar">
-                    <Bot size={16} />
+                    {msg.error ? (
+                      <AlertCircle size={16} />
+                    ) : (
+                      <Bot size={16} />
+                    )}
                   </div>
                 )}
-                <div className={`msg-bubble ${msg.sender === "user" ? "user-bubble" : "ai-bubble"}`}>
-                  <p>{msg.text}</p>
+
+                <div
+                  className={`msg-bubble ${
+                    msg.sender === "user"
+                      ? "user-bubble"
+                      : "ai-bubble"
+                  } ${msg.error ? "error-bubble" : ""}`}
+                >
+                  <p style={{ whiteSpace: "pre-wrap" }}>{msg.text}</p>
+
                   <span className="msg-time">{msg.time}</span>
                 </div>
+
                 {msg.sender === "user" && (
                   <div className="msg-avatar user-avatar-badge">
                     SS
@@ -119,41 +197,69 @@ function AiBusinessAnalyst() {
                 )}
               </div>
             ))}
+
+            {/* Loading */}
+            {isLoading && (
+              <div className="chat-message-row ai-row">
+                <div className="msg-avatar ai-avatar">
+                  <Bot size={16} />
+                </div>
+
+                <div className="msg-bubble ai-bubble">
+                  <div className="ai-loading">
+                    <Loader2 size={15} className="loading-spinner" />
+                    <span>Analyzing your business data...</span>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Quick Prompts */}
           <div className="suggested-chips">
-            {suggestedPrompts.map((prompt, idx) => (
+            {suggestedPrompts.map((prompt, index) => (
               <button
-                key={idx}
+                key={index}
                 className="prompt-chip"
-                onClick={() => setInputMessage(prompt)}
+                onClick={() => handlePromptClick(prompt)}
+                disabled={isLoading}
               >
                 {prompt}
               </button>
             ))}
           </div>
 
-          {/* Input Box */}
+          {/* Input */}
           <form className="chat-input-form" onSubmit={handleSendMessage}>
             <input
               type="text"
-              placeholder="Ask anything about sales, forecasts, or inventory..."
+              placeholder="Ask anything about sales, revenue, products, customers, or inventory..."
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
+              disabled={isLoading}
             />
-            <button type="submit" className="send-btn">
-              <Send size={16} />
+
+            <button
+              type="submit"
+              className="send-btn"
+              disabled={isLoading || !inputMessage.trim()}
+              title="Ask AI"
+            >
+              {isLoading ? (
+                <Loader2 size={16} className="loading-spinner" />
+              ) : (
+                <Send size={16} />
+              )}
             </button>
           </form>
         </div>
 
-        {/* Side Panel: Automated Insights */}
+        {/* ================= SIDEBAR ================= */}
         <div className="dashboard-card ai-sidebar-panel">
           <div className="card-header">
             <div>
-              <h3>Live Recommendations</h3>
-              <p>Automated real-time diagnostics</p>
+              <h3>AI Capabilities</h3>
+              <p>What your business analyst can analyze</p>
             </div>
           </div>
 
@@ -162,9 +268,13 @@ function AiBusinessAnalyst() {
               <div className="insight-icon up">
                 <TrendingUp size={16} />
               </div>
+
               <div>
-                <strong>Revenue Growth</strong>
-                <p>Revenue increased by 18.6% compared with the previous period[cite: 2].</p>
+                <strong>Sales & Revenue</strong>
+                <p>
+                  Revenue, orders, AOV, growth trends and business
+                  performance.
+                </p>
               </div>
             </div>
 
@@ -172,9 +282,13 @@ function AiBusinessAnalyst() {
               <div className="insight-icon warning">
                 <Package size={16} />
               </div>
+
               <div>
-                <strong>Stock Alert</strong>
-                <p>8 products are approaching their minimum stock level[cite: 2].</p>
+                <strong>Products & Inventory</strong>
+                <p>
+                  Top products, slow movers, stock risks and
+                  replenishment opportunities.
+                </p>
               </div>
             </div>
 
@@ -182,9 +296,27 @@ function AiBusinessAnalyst() {
               <div className="insight-icon customer">
                 <Users size={16} />
               </div>
+
               <div>
-                <strong>Top Segment</strong>
-                <p>Electronics customers show the highest repeat purchase rate[cite: 2].</p>
+                <strong>Customer Analytics</strong>
+                <p>
+                  Customer segments, spending, orders and retention
+                  opportunities.
+                </p>
+              </div>
+            </div>
+
+            <div className="insight-card-item">
+              <div className="insight-icon">
+                <Sparkles size={16} />
+              </div>
+
+              <div>
+                <strong>Business Recommendations</strong>
+                <p>
+                  Data-driven actions to improve revenue, margins,
+                  inventory and customer retention.
+                </p>
               </div>
             </div>
           </div>
